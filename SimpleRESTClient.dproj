@@ -173,7 +173,7 @@
             <FormType>dfm</FormType>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
-        <DCCReference Include="OknaProjektu\Categories_frm.pas">
+        <DCCReference Include="ProjectForms\Categories_frm.pas">
             <Form>Categories</Form>
             <FormType>fmx</FormType>
         </DCCReference>

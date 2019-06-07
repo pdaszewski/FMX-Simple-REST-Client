@@ -1,0 +1,420 @@
+object Categories: TCategories
+  Left = 0
+  Top = 0
+  BorderStyle = ToolWindow
+  Caption = 'Categories list'
+  ClientHeight = 657
+  ClientWidth = 375
+  Position = ScreenCenter
+  StyleBook = LoginForm.SterlingStyleBook
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnActivate = FormShow
+  OnCreate = FormCreate
+  OnShow = FormShow
+  DesignerMasterStyle = 3
+  object BackgroundRect: TRectangle
+    Align = Contents
+    Fill.Color = xFF250084
+    Size.Width = 375.000000000000000000
+    Size.Height = 657.000000000000000000
+    Size.PlatformDefault = False
+    Stroke.Kind = None
+  end
+  object ListLayout: TLayout
+    Align = Client
+    Size.Width = 375.000000000000000000
+    Size.Height = 609.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 3
+    object Rectangle1: TRectangle
+      Align = Contents
+      Fill.Color = claWhite
+      Size.Width = 375.000000000000000000
+      Size.Height = 609.000000000000000000
+      Size.PlatformDefault = False
+      Stroke.Kind = None
+    end
+    object CatList: TListView
+      Touch.GestureManager = GestureManager
+      Touch.InteractiveGestures = [LongTap, DoubleTap]
+      OnGesture = CatListGesture
+      OnTap = CatListTap
+      ItemAppearanceClassName = 'TCustomizeItemObjects'
+      ItemEditAppearanceClassName = 'TCustomizeItemObjects'
+      HeaderAppearanceClassName = 'TListHeaderObjects'
+      FooterAppearanceClassName = 'TListHeaderObjects'
+      Align = Client
+      Margins.Left = 5.000000000000000000
+      Margins.Top = 5.000000000000000000
+      Margins.Right = 5.000000000000000000
+      Margins.Bottom = 5.000000000000000000
+      Size.Width = 365.000000000000000000
+      Size.Height = 599.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 1
+      ItemAppearanceObjects.ItemObjects.Text.Font.Family = 'Comfortaa'
+      ItemAppearanceObjects.ItemObjects.Text.WordWrap = True
+      ItemAppearanceObjects.ItemObjects.Text.TextColor = xFF010101
+      ItemAppearanceObjects.ItemObjects.Text.VertAlign = Center
+      ItemAppearanceObjects.ItemObjects.Image.VertAlign = Trailing
+      ItemAppearanceObjects.ItemObjects.Image.Visible = True
+      ItemAppearanceObjects.ItemObjects.GlyphButton.ButtonType = Add
+      ItemAppearanceObjects.ItemObjects.GlyphButton.ClickOnSelect = False
+      ItemAppearanceObjects.ItemObjects.GlyphButton.Width = 32.000000000000000000
+      ItemAppearanceObjects.ItemObjects.GlyphButton.Height = 32.000000000000000000
+      ItemAppearanceObjects.ItemObjects.GlyphButton.Align = Trailing
+      CanSwipeDelete = False
+      DeleteButtonText = 'Usu'#324
+      SearchVisible = True
+    end
+  end
+  object menu: TListView
+    ItemAppearanceClassName = 'TImageListItemAppearance'
+    ItemEditAppearanceClassName = 'TImageListItemDeleteAppearance'
+    HeaderAppearanceClassName = 'TListHeaderObjects'
+    FooterAppearanceClassName = 'TListHeaderObjects'
+    Images = IkonyMenu
+    Align = Scale
+    Position.X = 160.000000000000000000
+    Position.Y = 48.000000000000000000
+    Size.Width = 215.000000000000000000
+    Size.Height = 601.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 4
+    Visible = False
+    ItemAppearance.ItemHeight = 60
+    ItemAppearance.ItemEditHeight = 60
+    ItemAppearanceObjects.ItemObjects.Text.Font.Family = 'Comfortaa'
+    ItemAppearanceObjects.ItemObjects.Text.Font.Size = 13.000000000000000000
+    ItemAppearanceObjects.ItemObjects.Text.WordWrap = True
+    ItemAppearanceObjects.ItemObjects.Image.Width = 20.000000000000000000
+    ItemAppearanceObjects.ItemObjects.Image.Height = 20.000000000000000000
+    CanSwipeDelete = False
+    OnItemClick = menuItemClick
+    object ShadowEffect4: TShadowEffect
+      Distance = 1.000000000000000000
+      Direction = 45.000000000000000000
+      Softness = 0.300000011920929000
+      Opacity = 0.600000023841857900
+      ShadowColor = claBlack
+    end
+  end
+  object HeaderToolBar: TToolBar
+    Size.Width = 375.000000000000000000
+    Size.Height = 48.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 0
+    object headerLabel: TLabel
+      Align = Contents
+      StyledSettings = [Size]
+      Opacity = 0.899999976158142100
+      Margins.Left = 5.000000000000000000
+      Margins.Top = 5.000000000000000000
+      Margins.Right = 5.000000000000000000
+      Margins.Bottom = 5.000000000000000000
+      Size.Width = 365.000000000000000000
+      Size.Height = 38.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = 'toollabel'
+      TextSettings.Font.Family = 'Comfortaa'
+      TextSettings.Font.StyleExt = {00070000000000000004000000}
+      TextSettings.FontColor = xFF010101
+      TextSettings.HorzAlign = Center
+      Text = 'Categories'
+      TabOrder = 2
+    end
+    object BackButton: TButton
+      Align = Left
+      Size.Width = 48.000000000000000000
+      Size.Height = 48.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = 'arrowlefttoolbutton'
+      TabOrder = 1
+      Text = 'MenuBTN'
+      OnClick = BackButtonClick
+    end
+    object hamburger_menu: TButton
+      Align = Right
+      Position.X = 327.000000000000000000
+      Size.Width = 48.000000000000000000
+      Size.Height = 48.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = 'drawertoolbutton'
+      TabOrder = 0
+      Text = 'MenuBTN'
+      OnClick = hamburger_menuClick
+    end
+  end
+  object GrayBox: TRectangle
+    Align = VertCenter
+    Fill.Color = xAAFFFFFF
+    Margins.Left = 20.000000000000000000
+    Margins.Right = 20.000000000000000000
+    Position.X = 20.000000000000000000
+    Position.Y = 292.000000000000000000
+    Size.Width = 335.000000000000000000
+    Size.Height = 121.000000000000000000
+    Size.PlatformDefault = False
+    Stroke.Kind = None
+    Visible = False
+    XRadius = 10.000000000000000000
+    YRadius = 10.000000000000000000
+    object lbl_working: TLabel
+      Align = Bottom
+      StyledSettings = [Size]
+      Position.Y = 80.000000000000000000
+      Size.Width = 335.000000000000000000
+      Size.Height = 41.000000000000000000
+      Size.PlatformDefault = False
+      TextSettings.Font.Family = 'Comfortaa'
+      TextSettings.HorzAlign = Center
+      Text = 'Working ...'
+    end
+    object AniIndicator: TAniIndicator
+      Align = Center
+      Size.Width = 85.000000000000000000
+      Size.Height = 70.000000000000000000
+      Size.PlatformDefault = False
+      Style = Circular
+    end
+    object GlowEffect2: TGlowEffect
+      Softness = 0.800000011920929000
+      GlowColor = claBlue
+      Opacity = 0.899999976158142100
+    end
+  end
+  object GestureManager: TGestureManager
+    Sensitivity = 80.000000000000000000
+    Left = 231
+    Top = 510
+  end
+  object IkonyMenu: TImageList
+    Source = <
+      item
+        MultiResBitmap.Height = 32
+        MultiResBitmap.Width = 32
+        MultiResBitmap.LoadSize = 0
+        MultiResBitmap = <
+          item
+            Width = 32
+            Height = 32
+            PNG = {
+              89504E470D0A1A0A0000000D4948445200000020000000200806000000737A7A
+              F4000000017352474200AECE1CE90000000467414D410000B18F0BFC61050000
+              0246494441545847ED95BF6E1A4110C6F7F88FA200151414A1B34814A58FC483
+              24CF603F42A2F47E88D48914A5774565C952D287CA35051244810B7F0EF27D7B
+              3B78BDBB67302ED2DC4F1ADDEEDEB0F3EDCCECA1727272FE379179DA448542E1
+              671445CFCCDC25817D4892E45B3A7D1A9E806AB5FAAB582C46E57259418459BD
+              63B55AA9DD6EA720E02FC66FCCF2C978119ACDE6A856ABA94AA5121480C06ABD
+              5EABE572A90D223E6EB7DB2FE6F5A3F122743A9D11B2A005300B2E0C8E803AF8
+              7C3ED719E19CEB0780F6E4159EBB749AE209E876BBA37ABD9E9901A65FCAC027
+              8D62088508F66FE9BBD96C685ED93205905006889C961B73CCA71DDC85C14DB9
+              D462B13833CB9A8279EEA1331D09370F99C05352240D8D9B692CA994D5C5CB40
+              BBDDD63DC0CD7BBDDEED7038FC6A5E79F4FBFDF3388EB3AEEB3DD8BCEC99E974
+              7A2F039E8056ABA505944A259D8DF178FC1ACB694A2CE0F7027E5759D7D5457A
+              C515E0954090BAE15A5E9B25972BE97E6E7EC8B2F004B0A118589A0A019EA376
+              2FF5C48053BFE3A60C4EFF63E09E21DFA00062371BEAF7DD0C35F8547F32437D
+              3A8A3D64E428014CBD0BEB8C9E38E7185DFDD9AD39C51E3212DA3BD8033C15D5
+              8A7206C4FC0243DEA3B722803EC75A561F78ED8BFF8111526C6677F01AF104CC
+              46E8FD315008AEEDC3B780E9A2A30B4FCDAB792ADC53326AE30968341ABFE928
+              A91323A7A4DE36DCA685DEC0C21330994C2EE1184BF78AD91BB9EF1E32FCAFCC
+              51D63F83C1E0C76C36BB3461F6043F61F8E17B3C6AE9ECC9C430A6F016BD73A3
+              57727272F628F50F6B201A14173BFAD80000000049454E44AE426082}
+            FileName = 
+              'D:\Prace\FXSystems\!Projekty Delphi\Bud'#380'et domowy\Wersja 0.7.7\!' +
+              'Projektowanie\Grafiki interfejsu\output-onlinepngtools.png'
+          end>
+        Name = 'download'
+      end
+      item
+        MultiResBitmap.Height = 32
+        MultiResBitmap.Width = 32
+        MultiResBitmap.LoadSize = 0
+        MultiResBitmap = <
+          item
+            Width = 32
+            Height = 32
+            PNG = {
+              89504E470D0A1A0A0000000D4948445200000020000000200806000000737A7A
+              F4000000017352474200AECE1CE90000000467414D410000B18F0BFC61050000
+              0187494441545847ED95BB4A03411486F7A295880882602958D888F61616A216
+              16F1092C2CED2CAD2CACADAC7C1011542CAC55B01004856CE50D4514444D76D7
+              6F3D63D8CC26712FD990C07EF033672EE79F93CC0C6B14F432A3A6691EA27DE2
+              1119EA1C53966539C857BA656C52A672C6B6ED65367C0F6DFEA757E616D4B27C
+              60930DE48636D55545EB6A795BE9E7ACF7B4CD9A8AB5BBE4D8929A9D610C8F1B
+              6DD44AE41C903B2416E999C0EC5A374FA02B3CC6C52A215CA8390C9E35C3347A
+              C26E565C6342D21AFA0E9964D5175A55F675442E0A67B7857608DB768920F02A
+              E15BF17DFF5486044BB535585452611EACA8B686A9DA30639CFF0C954E136FCB
+              506636F96197AEEB9E11DFCBD03F50C4BC768EA9155C68651B2172049DA628A0
+              670BF090AB29184B4C9A026E3CCF1B407D9A06997364497CD214F0803E25ACE3
+              03C57BE3218A4BD8D50554559B19BE01151546685A0049E7342FD2CBC423BA90
+              304AAB7FE08DA7B5C857F184B88C8227E6D0BF0B261BA1E67ED7A132FD233C96
+              88831752D08D18C60F9B83D080BE4DC1290000000049454E44AE426082}
+            FileName = 
+              'D:\Prace\FXSystems\!Projekty Delphi\Bud'#380'et domowy\Wersja 0.7.7\!' +
+              'Projektowanie\Grafiki interfejsu\default.png'
+          end>
+        Name = 'default'
+      end
+      item
+        MultiResBitmap.Height = 32
+        MultiResBitmap.Width = 32
+        MultiResBitmap.LoadSize = 0
+        MultiResBitmap = <
+          item
+            Width = 32
+            Height = 32
+            PNG = {
+              89504E470D0A1A0A0000000D4948445200000020000000200806000000737A7A
+              F4000000017352474200AECE1CE90000000467414D410000B18F0BFC61050000
+              01D0494441545847EDD6CD2B665100C7F1C790B11E654969168A59081BB68ABF
+              C0347B2946941245366AA6947FC1424852A69942C986922696A224EC67355E8A
+              BC7D7FC773EA743BCF7DCEBDDDDDF3FCEAE3716ECF79B9CF39F79E932BA71433
+              8E5DB499528A7CC114FEE0123778C12D4EB18A7ED4229A59BCE62DEA42682AD0
+              8723D8068A79C0021AA0B89D8B061A94661CC0AD9CC41D7E45AE49D000BE410D
+              442B67A1E80006A0B9B5159EB18521B443735C850FF894BFF61DFACE13DCCE7C
+              6207D00DB7112DB8CF084D23AEE17618153B80DFB05F9CD18584892E389FD801
+              7CC57FCC9952B284742E418B3069F492F175E66306A00594657AF39F21B9D71F
+              BD60B28C5EAFA3A836A5C251E73F716E4A251D3B052D98448D2915CE23E6716C
+              4A196609BE95EAB387CC629F826277EEE630FF9969D6E1BBDB286DAF491FDD8F
+              D8815E6C3DBAE04BC800D274AEC7710DB68D1FF0266400DB48B22175E02F6CFD
+              2B68D7F426740AB4436E6210DA7ED56025B42DD7A11363D8875BEF1FF4A4154C
+              E800D2D0B951A72A6FE2E654F3B5F1FE6FEA2CA31527A61493E82F300D1BADDC
+              E84F1A47A7284D531782B302DB80DBB99B264C40A7A30B6843D1314DC7F233E8
+              2646508FC4D12EA6553E6C4AE5944E72B937C15B0C00B5A4709A000000004945
+              4E44AE426082}
+            FileName = 
+              'D:\Prace\FXSystems\!Projekty Delphi\Bud'#380'et domowy\Wersja 0.7.7\!' +
+              'Projektowanie\Grafiki interfejsu\load.png'
+          end>
+        Name = 'load'
+      end
+      item
+        MultiResBitmap.Height = 32
+        MultiResBitmap.Width = 24
+        MultiResBitmap.LoadSize = 0
+        MultiResBitmap = <
+          item
+            Width = 24
+            Height = 32
+            PNG = {
+              89504E470D0A1A0A0000000D4948445200000018000000200806000000085EB8
+              38000000017352474200AECE1CE90000000467414D410000B18F0BFC61050000
+              00B049444154484B63C0033881781F10FF2780F70031071063058C406C036162
+              806A20F680300982ED40DC0661A20290052057D00C3041699A019A5B000AA210
+              08738802900F40C01988174298540331407C00C26460F00162F4F44D290627F1
+              A19F8A462D2008462D2008462D2008462D2008462D2008868F057FA13435018A
+              998A408CADE22617FF0362692046018B80189B6272F06C20C6006C40DC09C4AF
+              80189B2662F04B2006B5B25981180818180097345DEEDB701ADB000000004945
+              4E44AE426082}
+            FileName = 
+              'D:\Prace\FXSystems\!Projekty Delphi\Bud'#380'et domowy\Wersja 0.7.7\!' +
+              'Projektowanie\Grafiki interfejsu\delete_all.png'
+          end>
+        Name = 'delete_all'
+      end
+      item
+        MultiResBitmap.Height = 32
+        MultiResBitmap.Width = 32
+        MultiResBitmap.LoadSize = 0
+        MultiResBitmap = <
+          item
+            Width = 32
+            Height = 32
+            PNG = {
+              89504E470D0A1A0A0000000D4948445200000020000000200806000000737A7A
+              F4000000017352474200AECE1CE90000000467414D410000B18F0BFC61050000
+              0161494441545847ED97AD4EC4401485971F8B468027048B20E109D06071282C
+              280C040B8204BB21600802CD1B4042C24320788E5DCED7BBB3344BB7ED74EE14
+              C3979CEE6993CE3DBD9D99DD1D4472218D9D34929EA4D678160F1A2DE8D0068A
+              9F9B2D7895BECC7662575A37DB4CF9C9DF269F07520ACF5218B396D9E22B13DF
+              4B80AAE2D04B8079C5217B80BAE29035405371C816A04D71C812A06D71700F10
+              531CDC030413A36D29856900B6620CB0BDDE98ADE553FA30DB1902EC9BFD79AA
+              A86FA644A61D582C4ED338962ECD7623A5036752B8FF8A0B2578BDD7667FE1D2
+              010A6C982D38956E25AE2F4B0FD289D4484A0778807B298C8186D24BE9BC8ACA
+              65D8751212E24E0AE3CCAA0AD749C86FBB23894E44E311001867D56C1C1E0198
+              74BC82BDE22C128F002CBF43B3F1780460F9D18579AAC56B0E74E63FC09F0760
+              9284DD8ABF5AEF66B3B323AD6108C04ED6385B33315ED26153DA92FA0EA1CE0F
+              1EBF01E6F5B8067CB98C090000000049454E44AE426082}
+            FileName = 
+              'D:\Prace\FXSystems\!Projekty Delphi\Bud'#380'et domowy\Wersja 0.7.7\!' +
+              'Projektowanie\Grafiki interfejsu\rozwin.png'
+          end>
+        Name = 'expand'
+      end
+      item
+        MultiResBitmap.Height = 32
+        MultiResBitmap.Width = 32
+        MultiResBitmap.LoadSize = 0
+        MultiResBitmap = <
+          item
+            Width = 32
+            Height = 32
+            PNG = {
+              89504E470D0A1A0A0000000D4948445200000020000000200806000000737A7A
+              F4000000017352474200AECE1CE90000000467414D410000B18F0BFC61050000
+              015E494441545847ED97314E02411486573D001E40CE61E14568D1C4CA82CA5A
+              5BB5B40463638209859E422DBD82B1F7048AFF3F8F376CC1C2BE79334B4CFC92
+              8FBC05B2EFDFD96186ADC003FC86F38EFD81D31DBCB0F92EDC067306601AF201
+              5FA42CCE113C90723924D370D40D3318FA6E6BE823FF01FE44009DA4ABBC822E
+              3C237007CFA54C2735C0133C95D2476A802FC85BE02635C0108EA1E716062C27
+              78861329030CC179E00EA133BA6929E6676CBC07B977DC2EDE53EFA115D3527C
+              0D4FA06ED967F006121EBF4B998E5E897533BA84C7529A8923C083D4001E6280
+              FAFF814738903219EEF37D29D732828752E61B0136D773B5D6FD13AAA157CE51
+              6D721FBE4185F328A6F18E006F1FCFD3440FBE42ED7701035D04686C4E4A0758
+              DB9C940CB0B1392915A05573522240EBE62477005373923B80A93917077E917C
+              C2FA2261858F5A7179055C643606207C4AD5C4B96CD558E1D0E70C61685E55BF
+              DE0ED125678A732D0000000049454E44AE426082}
+            FileName = 
+              'D:\Prace\FXSystems\!Projekty Delphi\Bud'#380'et domowy\Wersja 0.7.7\!' +
+              'Projektowanie\Grafiki interfejsu\zwin.png'
+          end>
+        Name = 'fold'
+      end>
+    Destination = <
+      item
+        Layers = <
+          item
+            Name = 'default'
+            SourceRect.Right = 32.000000000000000000
+            SourceRect.Bottom = 32.000000000000000000
+          end>
+      end
+      item
+        Layers = <
+          item
+            Name = 'load'
+            SourceRect.Right = 32.000000000000000000
+            SourceRect.Bottom = 32.000000000000000000
+          end>
+      end
+      item
+        Layers = <
+          item
+            Name = 'delete_all'
+            SourceRect.Right = 24.000000000000000000
+            SourceRect.Bottom = 32.000000000000000000
+          end>
+      end
+      item
+        Layers = <
+          item
+            Name = 'expand'
+            SourceRect.Right = 32.000000000000000000
+            SourceRect.Bottom = 32.000000000000000000
+          end>
+      end
+      item
+        Layers = <
+          item
+            Name = 'fold'
+            SourceRect.Right = 32.000000000000000000
+            SourceRect.Bottom = 32.000000000000000000
+          end>
+      end>
+    Left = 231
+    Top = 448
+  end
+end

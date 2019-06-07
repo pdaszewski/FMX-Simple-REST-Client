@@ -1,19 +1,11 @@
 program SimpleRESTClient;
 
-
-
-
-
-
-
-
-
 uses
   System.StartUpCopy,
   FMX.Forms,
   HeaderFooterTemplate in 'HeaderFooterTemplate.pas' {LoginForm},
   RESTDataModule_frm in 'RESTDataModule_frm.pas' {RESTDataModule: TDataModule},
-  Categories_frm in 'OknaProjektu\Categories_frm.pas' {Categories};
+  Categories_frm in 'ProjectForms\Categories_frm.pas' {Categories};
 
 {$R *.res}
 
