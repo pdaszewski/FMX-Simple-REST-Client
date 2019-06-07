@@ -3,8 +3,15 @@ unit RESTDataModule_frm;
 interface
 
 uses
-  System.SysUtils, System.Classes, IPPeerClient, REST.Client, Data.Bind.Components, Data.Bind.ObjectScope,
-  REST.Types, System.JSON, HTTPApp;
+  System.SysUtils
+  ,System.Classes
+  ,IPPeerClient
+  ,REST.Client
+  ,Data.Bind.Components
+  ,Data.Bind.ObjectScope
+  ,REST.Types
+  ,System.JSON
+  ,HTTPApp;
 
 type
   TCategoryShow = class(TThread)
@@ -35,12 +42,14 @@ implementation
 
 {%CLASSGROUP 'FMX.Controls.TControl'}
 
-uses HeaderFooterTemplate, Categories_frm;
+uses
+  HeaderFooterTemplate
+  ,Categories_frm;
 
 {$R *.dfm}
 
 //####################################################################################
-//          Czêœæ obs³uguj¹ca wielow¹tkowoœæ
+//          The part that supports multithreading
 //####################################################################################
 constructor TCategoryShow.Create(group_id_in: String);
 begin
@@ -53,7 +62,6 @@ end;
 
 procedure TCategoryShow.Execute;
 var
-  i: Integer;
   RESTParam: string;
 begin
  RESTParam:='http://localhost:8443/show_categories?group_id='+group_id;
@@ -62,7 +70,6 @@ begin
  try
   try
    RESTDataModule.Request.Execute;
-   for i := 1 to 100 do Sleep(10);
   finally
   end;
  except
@@ -71,7 +78,7 @@ end;
 
 procedure TCategoryShow.DoOnTerminate(Sender: TObject);
 begin
-  Categories.WynikListyKategorii(RESTDataModule.Response.StatusCode, RESTDataModule.Response.Content);
+  Categories.Result_of_Category_List_Request(RESTDataModule.Response.StatusCode, RESTDataModule.Response.Content);
   inherited;
 end;
 //####################################################################################

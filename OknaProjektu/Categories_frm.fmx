@@ -6,7 +6,7 @@ object Categories: TCategories
   ClientHeight = 657
   ClientWidth = 375
   Position = ScreenCenter
-  StyleBook = Logowanie.SterlingStyleBook
+  StyleBook = LoginForm.SterlingStyleBook
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
@@ -66,7 +66,6 @@ object Categories: TCategories
       ItemAppearanceObjects.ItemObjects.GlyphButton.Height = 32.000000000000000000
       ItemAppearanceObjects.ItemObjects.GlyphButton.Align = Trailing
       CanSwipeDelete = False
-      OnItemClick = CatListItemClick
       DeleteButtonText = 'Usu'#324
       SearchVisible = True
     end
@@ -154,7 +153,7 @@ object Categories: TCategories
     Margins.Left = 20.000000000000000000
     Margins.Right = 20.000000000000000000
     Position.X = 20.000000000000000000
-    Position.Y = 332.000000000000000000
+    Position.Y = 292.000000000000000000
     Size.Width = 335.000000000000000000
     Size.Height = 121.000000000000000000
     Size.PlatformDefault = False
@@ -162,7 +161,7 @@ object Categories: TCategories
     Visible = False
     XRadius = 10.000000000000000000
     YRadius = 10.000000000000000000
-    object lbl_pracuje: TLabel
+    object lbl_working: TLabel
       Align = Bottom
       StyledSettings = [Size]
       Position.Y = 80.000000000000000000
@@ -171,7 +170,7 @@ object Categories: TCategories
       Size.PlatformDefault = False
       TextSettings.Font.Family = 'Comfortaa'
       TextSettings.HorzAlign = Center
-      Text = 'Tworzenie nowego konta...'
+      Text = 'Working ...'
     end
     object AniIndicator: TAniIndicator
       Align = Center

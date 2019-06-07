@@ -3,19 +3,40 @@ unit Categories_frm;
 interface
 
 uses
-  System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
-  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.Effects,
-  FMX.StdCtrls, FMX.Edit, FMX.Objects, FMX.Layouts, FMX.Controls.Presentation,
-  FMX.ListView.Types, FMX.ListView.Appearances, FMX.ListView.Adapters.Base,
-  FMX.ListView, FMX.Platform, FMX.VirtualKeyboard, FMX.Gestures, System.JSON,
-  System.ImageList, FMX.ImgList, FMX.Filter.Effects;
+  System.SysUtils
+  ,System.Types
+  ,System.UITypes
+  ,System.Classes
+  ,System.Variants
+  ,FMX.Types
+  ,FMX.Controls
+  ,FMX.Forms
+  ,FMX.Graphics
+  ,FMX.Dialogs
+  ,FMX.Effects
+  ,FMX.StdCtrls
+  ,FMX.Edit
+  ,FMX.Objects
+  ,FMX.Layouts
+  ,FMX.Controls.Presentation
+  ,FMX.ListView.Types
+  ,FMX.ListView.Appearances
+  ,FMX.ListView.Adapters.Base
+  ,FMX.ListView
+  ,FMX.Platform
+  ,FMX.VirtualKeyboard
+  ,FMX.Gestures
+  ,System.JSON
+  ,System.ImageList
+  ,FMX.ImgList
+  ,FMX.Filter.Effects;
 
 type
- kategorie = record
-  id_nadrzedne : Integer;
-  id_wlasne : Integer;
-  nazwa : String;
-  widoczny : Boolean;
+ categories_type = record
+  main_id   : Integer;
+  own_id    : Integer;
+  name      : String;
+  visible   : Boolean;
  end;
 
 type
@@ -24,7 +45,7 @@ type
     headerLabel: TLabel;
     BackButton: TButton;
     GrayBox: TRectangle;
-    lbl_pracuje: TLabel;
+    lbl_working: TLabel;
     AniIndicator: TAniIndicator;
     GlowEffect2: TGlowEffect;
     ListLayout: TLayout;
@@ -38,114 +59,109 @@ type
     ShadowEffect4: TShadowEffect;
 
     procedure menuItemClick(const Sender: TObject; const AItem: TListViewItem);
-    procedure Pobierz_dane_kategorii;
+    procedure Download_category_data;
 
-    procedure WynikListyKategorii(kod_odpowiedzi : Integer; kontent : string);
+    procedure Result_of_Category_List_Request(response_code : Integer; content : string);
 
-    procedure Utworz_menu;
-    procedure Czysc_tablice_kategorii;
-    procedure Wyswietl_liste;
+    procedure Create_menu;
+    procedure Clear_category_table;
+    procedure Show_list;
 
     procedure BackButtonClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure CatListGesture(Sender: TObject; const EventInfo: TGestureEventInfo; var Handled: Boolean);
-    procedure CatListItemClick(const Sender: TObject; const AItem: TListViewItem);
     procedure hamburger_menuClick(Sender: TObject);
     procedure CatListTap(Sender: TObject; const Point: TPointF);
   private
    Var
-    pozycja_ListScroll: Single;
-    czy_tlo_zaladowane : Boolean;
-    wybrana_kategoria_id_wlasne : Integer;
-    wybrane_id_wlasne : Integer;
-    dodaj_nadrzedna : Boolean;
-    okno_aktywne : Boolean;
-    KliknietyItem : TListViewItem;
-    ktory_wyswietlic: Integer;
+    background_is_loaded : Boolean;
+    active_window : Boolean;
 
-    operacja_nieudana                     : string;
-    nazwa_pobieranie_kategorii            : string;
+    surgery_unsuccessful                  : string;
+    name_of_category_collection           : string;
     menu_loading                          : string;
   public
     { Public declarations }
   end;
 
 Const
- max_kategorii = 100;
+ max_category = 100;
 
 var
   Categories: TCategories;
-  tab: array[1..max_kategorii] of kategorie;
+  tab: array[1..max_category] of categories_type;
 
 
 implementation
 
 {$R *.fmx}
 
-uses HeaderFooterTemplate, RESTDataModule_frm;
+uses
+  HeaderFooterTemplate
+  ,RESTDataModule_frm;
 
-procedure TCategories.Pobierz_dane_kategorii;
+procedure TCategories.Download_category_data;
 Var
- zlecenie: TCategoryShow;
+ thread_order: TCategoryShow;
 begin
-  Czysc_tablice_kategorii;
+  Clear_category_table;
   try
     try
-      zlecenie := TCategoryShow.Create('1');
+      thread_order := TCategoryShow.Create('1');
     finally
     end;
   except
-    ShowMessage(operacja_nieudana);
+    ShowMessage(surgery_unsuccessful);
   end;
 end;
 
-procedure TCategories.WynikListyKategorii(kod_odpowiedzi : Integer; kontent : string);
+procedure TCategories.Result_of_Category_List_Request(response_code : Integer; content : string);
 var
   Root: TJSONObject;
-  Tablica: TJSONArray;
-  Obiekt: TJSONObject;
+  GlobalArray: TJSONArray;
+  ArrayObject: TJSONObject;
   i: Integer;
-  id_nadrzedne: Integer;
-  id_wlasne: Integer;
-  nazwa: string;
-  ktory_element: Integer;
+  main_id: Integer;
+  own_id: Integer;
+  name: string;
+  which_element: Integer;
 Begin
- if kod_odpowiedzi=200 then
+ if response_code=200 then
   Begin
-   Root    := TJSONObject.ParseJSONValue(kontent) as TJSONObject;
-   Tablica := TJSONObject.ParseJSONValue(Root.GetValue('categories').ToString) as TJSONArray;
-   if tablica.Count>0 then
+   Root    := TJSONObject.ParseJSONValue(content) as TJSONObject;
+   GlobalArray := TJSONObject.ParseJSONValue(Root.GetValue('categories').ToString) as TJSONArray;
+   if GlobalArray.Count>0 then
     Begin
-     ktory_element := 1;
-     for i := 0 to tablica.Count-1 do
+     which_element := 1;
+     for i := 0 to GlobalArray.Count-1 do
       Begin
-       Obiekt := Tablica.Items[i] as TJSONObject;
-       id_nadrzedne  := StrToInt(Obiekt.Values['main_id'].Value);
-       id_wlasne     := StrToInt(Obiekt.Values['own_id'].Value);
-       nazwa         := Trim(Obiekt.Values['name'].Value);
-       tab[ktory_element].id_nadrzedne:=id_nadrzedne;
-       tab[ktory_element].id_wlasne   :=id_wlasne;
-       tab[ktory_element].nazwa       :=nazwa;
-       tab[ktory_element].widoczny    :=True;
-       Inc(ktory_element);
+       ArrayObject  := GlobalArray.Items[i] as TJSONObject;
+       main_id      := StrToInt(ArrayObject.Values['main_id'].Value);
+       own_id       := StrToInt(ArrayObject.Values['own_id'].Value);
+       name         := Trim(ArrayObject.Values['name'].Value);
+       tab[which_element].main_id     :=main_id;
+       tab[which_element].own_id      :=own_id;
+       tab[which_element].name        :=name;
+       tab[which_element].visible     :=True;
+       Inc(which_element);
       End;
      End;
 
-    if okno_aktywne then
+    if active_window then
      Begin
-      Wyswietl_liste;
+      Show_list;
       GrayBox.Visible     :=False;
       AniIndicator.Enabled:=False;
      End;
   End
- else Pobierz_dane_kategorii;
+ else Download_category_data;
 End;
 
 procedure TCategories.BackButtonClick(Sender: TObject);
 begin
  Close;
- Logowanie.Show;
+ LoginForm.Show;
 end;
 
 procedure TCategories.menuItemClick(const Sender: TObject; const AItem: TListViewItem);
@@ -157,20 +173,20 @@ begin
  if AItem.Text=menu_loading then
   Begin
    GrayBox.Visible:=True;
-   lbl_pracuje.Text:=nazwa_pobieranie_kategorii;
+   lbl_working.Text:=name_of_category_collection;
    AniIndicator.Enabled:=True;
-   Pobierz_dane_kategorii;
+   Download_category_data;
   End;
 
 end;
 
-procedure TCategories.Wyswietl_liste;
+procedure TCategories.Show_list;
 Var
   item : TListViewItem;
   i: Integer;
-  id_nadrzedne: Integer;
-  id_wlasne: Integer;
-  nazwa: String;
+  main_id: Integer;
+  own_id: Integer;
+  name: String;
   miejsce_na_liscie: Integer;
   lista_kolejnosc : TStringList;
   linia: string;
@@ -179,30 +195,29 @@ Var
   id_wlasne_pom: Integer;
 Begin
  lista_kolejnosc := TStringList.Create;
- pozycja_ListScroll := CatList.ScrollViewPos;
  CatList.BeginUpdate;
   CatList.Items.Clear;
  CatList.EndUpdate;
 
-  for i := 1 to max_kategorii do
+  for i := 1 to max_category do
    Begin
-    if tab[i].id_nadrzedne>-1 then
+    if tab[i].main_id>-1 then
      Begin
-      id_nadrzedne  := tab[i].id_nadrzedne;
-      id_wlasne     := tab[i].id_wlasne;
-      nazwa         := tab[i].nazwa;
-      id_wlasne_pom := id_wlasne;
-      if id_nadrzedne=0 then
+      main_id       := tab[i].main_id;
+      own_id        := tab[i].own_id;
+      name          := tab[i].name;
+      id_wlasne_pom := own_id;
+      if main_id=0 then
        Begin
-         lista_kolejnosc.Add(IntToStr(id_nadrzedne)+'-'+IntToStr(id_wlasne)+'-'+nazwa);
-         for it := 1 to max_kategorii do
+         lista_kolejnosc.Add(IntToStr(main_id)+'-'+IntToStr(own_id)+'-'+name);
+         for it := 1 to max_category do
           Begin
-           if (tab[it].id_nadrzedne=id_wlasne_pom) and (tab[it].widoczny=True) then
+           if (tab[it].main_id=id_wlasne_pom) and (tab[it].visible=True) then
             Begin
-             id_nadrzedne  := tab[it].id_nadrzedne;
-             id_wlasne     := tab[it].id_wlasne;
-             nazwa         := tab[it].nazwa;
-             lista_kolejnosc.Add(IntToStr(id_nadrzedne)+'-'+IntToStr(id_wlasne)+'-'+nazwa);
+             main_id        := tab[it].main_id;
+             own_id         := tab[it].own_id;
+             name           := tab[it].name;
+             lista_kolejnosc.Add(IntToStr(main_id)+'-'+IntToStr(own_id)+'-'+name);
             End;
           End;
        End;
@@ -215,19 +230,18 @@ Begin
    for i := 0 to lista_kolejnosc.Count-1 do
     Begin
      linia:=lista_kolejnosc.Strings[i];
-     poz:=Pos('-',linia);  id_nadrzedne:=StrToInt(Trim(Copy(linia,1,poz-1))); Delete(linia,1,poz);
-     poz:=Pos('-',linia);  id_wlasne:=StrToInt(Trim(Copy(linia,1,poz-1))); Delete(linia,1,poz);
-     nazwa:=Trim(linia);
+     poz:=Pos('-',linia);  main_id:=StrToInt(Trim(Copy(linia,1,poz-1))); Delete(linia,1,poz);
+     poz:=Pos('-',linia);  own_id:=StrToInt(Trim(Copy(linia,1,poz-1))); Delete(linia,1,poz);
+     name:=Trim(linia);
 
-     if id_nadrzedne=0 then
+     if main_id=0 then
        Begin
         item:=CatList.Items.Add;
-        if id_wlasne=wybrana_kategoria_id_wlasne then ktory_wyswietlic:=item.Index;
         item.Objects.AccessoryObject.Visible:=False;
-        item.Text:=nazwa;
+        item.Text:=name;
         item.Height:=50;
-        item.Data['id_nadrzedne'] := id_nadrzedne;
-        item.Data['id_wlasne']    := id_wlasne;
+        item.Data['main_id']    := main_id;
+        item.Data['own_id']     := own_id;
         item.Objects.TextObject.PlaceOffset.X:=-7;
         item.Objects.TextObject.Font.Style  := [TFontStyle.fsBold];
         item.Objects.TextObject.TextColor   := TAlphaColors.Black;
@@ -238,17 +252,17 @@ Begin
           item.ButtonText:='+';
        End;
 
-      if id_nadrzedne>0 then
+      if main_id>0 then
        Begin
         item:=CatList.Items.Add;
         item.Objects.AccessoryObject.Visible:=False;
         item.Objects.TextObject.Font.Style  := [];
         item.Objects.TextObject.TextColor   := TAlphaColors.Black;
         item.Objects.TextObject.Font.Size   := 15;
-        item.Text:=nazwa;
+        item.Text:=name;
         item.Height:=50;
-        item.Data['id_nadrzedne'] := id_nadrzedne;
-        item.Data['id_wlasne']    := id_wlasne;
+        item.Data['main_id'] := main_id;
+        item.Data['own_id']  := own_id;
        End;
 
     End;
@@ -276,53 +290,48 @@ begin
  Handled := True;
 end;
 
-procedure TCategories.CatListItemClick(const Sender: TObject; const AItem: TListViewItem);
-begin
- KliknietyItem:=AItem;
-end;
-
 procedure TCategories.CatListTap(Sender: TObject; const Point: TPointF);
 begin
  menu.Visible:=False;
 end;
 
-procedure TCategories.Czysc_tablice_kategorii;
+procedure TCategories.Clear_category_table;
 var
   i: Integer;
 Begin
- for i := 1 to max_kategorii do
+ for i := 1 to max_category do
   Begin
-   tab[i].id_nadrzedne:=-1;
-   tab[i].id_wlasne:=-1;
-   tab[i].nazwa:='';
-   tab[i].widoczny:=False;
+   tab[i].main_id:=-1;
+   tab[i].own_id:=-1;
+   tab[i].name:='';
+   tab[i].visible:=False;
   End;
 End;
 
 procedure TCategories.FormCreate(Sender: TObject);
 begin
- czy_tlo_zaladowane := False;
- Czysc_tablice_kategorii;
- okno_aktywne:=False;
+ background_is_loaded := False;
+ Clear_category_table;
+ active_window:=False;
  menu.Visible := False;
  menu.Position.Y := HeaderToolBar.Position.Y+HeaderToolBar.Height;
 
- menu_loading               := 'Show categories';
- operacja_nieudana          := 'Communication with REST failed!';
- nazwa_pobieranie_kategorii := 'Downloading categories list...';
+ menu_loading                 := 'Show categories';
+ surgery_unsuccessful         := 'Communication with REST failed!';
+ name_of_category_collection  := 'Downloading categories list...';
 end;
 
 procedure TCategories.FormShow(Sender: TObject);
 begin
- if czy_tlo_zaladowane=False then
+ if background_is_loaded=False then
   Begin
-   GlowEffect2.GlowColor    := Logowanie.GlowEffect2.GlowColor;
-   GrayBox.Fill             := Logowanie.GrayBox.Fill;
-   BackgroundRect.Fill      := Logowanie.BackgroundRect.Fill;
-   czy_tlo_zaladowane :=True;
+   GlowEffect2.GlowColor    := LoginForm.GlowEffect2.GlowColor;
+   GrayBox.Fill             := LoginForm.GrayBox.Fill;
+   BackgroundRect.Fill      := LoginForm.BackgroundRect.Fill;
+   background_is_loaded     :=True;
   End;
 
- okno_aktywne:=True;
+ active_window:=True;
  menu.Visible:=False;
 
  GrayBox.Visible:=False;
@@ -332,10 +341,10 @@ end;
 procedure TCategories.hamburger_menuClick(Sender: TObject);
 begin
  menu.Visible:=Not(menu.Visible);
- if menu.Visible then Utworz_menu;
+ if menu.Visible then Create_menu;
 end;
 
-procedure TCategories.Utworz_menu;
+procedure TCategories.Create_menu;
 Var
  item : TListViewItem;
 Begin
